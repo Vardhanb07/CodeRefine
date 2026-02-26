@@ -421,3 +421,72 @@ export const monacoLanguageMap = {
   java: 'java',
   cpp: 'cpp'
 }
+
+export const dashboardMetrics = {
+  totalAnalyses: 247,
+  bugsDetected: 89,
+  performanceGains: 34,
+  avgConfidenceScore: 87,
+  codeQualityIndex: 92
+}
+
+export const analysisHistory = [
+  { id: 1, title: 'user_auth.py', language: 'Python', mode: 'Bug Detection', confidence: 91, date: '2026-02-25', snippet: 'def authenticate_user(username, password)' },
+  { id: 2, title: 'UserService.java', language: 'Java', mode: 'Security Scan', confidence: 85, date: '2026-02-24', snippet: 'public List<User> getUsers(String username)' },
+  { id: 3, title: 'main.cpp', language: 'C++', mode: 'Performance Optimization', confidence: 78, date: '2026-02-23', snippet: 'int findMatches(std::vector<int>& data)' },
+  { id: 4, title: 'data_processor.py', language: 'Python', mode: 'Code Cleanup', confidence: 94, date: '2026-02-22', snippet: 'def process_data(df: pd.DataFrame)' },
+  { id: 5, title: 'ApiController.java', language: 'Java', mode: 'Refactor Mode', confidence: 88, date: '2026-02-21', snippet: 'public ResponseEntity<ApiResponse> handleRequest' },
+  { id: 6, title: 'utils.cpp', language: 'C++', mode: 'Complexity Analysis', confidence: 76, date: '2026-02-20', snippet: 'void processInput(char* userInput)' },
+]
+
+export const projectsData = [
+  { id: 1, name: 'E-Commerce Backend', description: 'FastAPI backend for e-commerce platform with authentication and payment processing', fileCount: 24, lastUpdated: '2026-02-25', languages: ['Python', 'SQL'], status: 'Active' },
+  { id: 2, name: 'Microservices Auth', description: 'JWT-based authentication microservice with Redis session management', fileCount: 12, lastUpdated: '2026-02-22', languages: ['Java', 'Docker'], status: 'Active' },
+  { id: 3, name: 'Real-time Dashboard', description: 'WebSocket-powered analytics dashboard with live data visualization', fileCount: 31, lastUpdated: '2026-02-18', languages: ['C++', 'WebSockets'], status: 'In Progress' },
+  { id: 4, name: 'ML Pipeline', description: 'Data ingestion and preprocessing pipeline for ML model training', fileCount: 18, lastUpdated: '2026-02-15', languages: ['Python', 'Pandas'], status: 'Active' },
+  { id: 5, name: 'API Gateway', description: 'Kong-based API gateway configuration with rate limiting and logging', fileCount: 8, lastUpdated: '2026-02-10', languages: ['Java', 'YAML'], status: 'Archived' },
+  { id: 6, name: 'Game Engine Core', description: 'High-performance 2D game engine with ECS architecture', fileCount: 47, lastUpdated: '2026-02-08', languages: ['C++'], status: 'In Progress' },
+]
+
+export const insightsData = {
+  issuesByType: [
+    { name: 'Bug', count: 89 },
+    { name: 'Security', count: 42 },
+    { name: 'Performance', count: 67 },
+    { name: 'Style', count: 103 },
+    { name: 'Complexity', count: 55 },
+  ],
+  languageUsage: [
+    { name: 'Python', value: 45 },
+    { name: 'Java', value: 30 },
+    { name: 'C++', value: 25 },
+  ],
+  confidenceTrend: [
+    { month: 'Sep', score: 72 },
+    { month: 'Oct', score: 75 },
+    { month: 'Nov', score: 78 },
+    { month: 'Dec', score: 82 },
+    { month: 'Jan', score: 85 },
+    { month: 'Feb', score: 87 },
+  ],
+  performanceTrend: [
+    { month: 'Sep', gain: 18 },
+    { month: 'Oct', gain: 22 },
+    { month: 'Nov', gain: 25 },
+    { month: 'Dec', gain: 28 },
+    { month: 'Jan', gain: 31 },
+    { month: 'Feb', gain: 34 },
+  ],
+}
+
+export const userProfile = {
+  name: 'Alex Johnson',
+  email: 'alex.johnson@example.com',
+  joinDate: 'September 2025',
+  avatar: 'AJ',
+  totalAnalyses: 247,
+  savedProjects: 6,
+  avgConfidenceScore: 87,
+  preferredLanguage: 'Python',
+  role: 'Senior Developer',
+}
