@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { Plus, FolderOpen, Calendar, FileCode } from 'lucide-react'
 import AppLayout from '../layouts/AppLayout'
 import { projectsData } from '../data/mockData'
@@ -10,6 +11,8 @@ const statusColors = {
 }
 
 function ProjectsPage() {
+  const navigate = useNavigate()
+
   return (
     <AppLayout>
       <motion.div
@@ -40,7 +43,8 @@ function ProjectsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="glass rounded-2xl p-6 hover:border-white/20 transition-all flex flex-col"
+              className="glass rounded-2xl p-6 hover:border-white/20 transition-all flex flex-col cursor-pointer"
+              onClick={() => navigate(`/projects/${project.id}`)}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-600/30 flex items-center justify-center">
@@ -62,7 +66,7 @@ function ProjectsPage() {
                 ))}
               </div>
               <button className="w-full py-2 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all text-sm">
-                View Project Files
+                View Project Details
               </button>
             </motion.div>
           ))}
