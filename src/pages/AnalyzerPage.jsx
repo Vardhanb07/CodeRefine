@@ -7,6 +7,8 @@ import CodeEditor from '../components/CodeEditor'
 import ResultsPanel from '../components/ResultsPanel'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { mockData, languageLabels, analysisModes } from '../data/mockData'
+import { analyzeCode } from '../services/api'
+import { transformResponse } from '../utils/transformResponse'
 
 const TOTAL_STEPS = 5
 
@@ -61,6 +63,7 @@ function AnalyzerPage() {
   const [customInstruction, setCustomInstruction] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [results, setResults] = useState(null)
+  const [error, setError] = useState(null)
   const [toast, setToast] = useState(null)
 
   const showToast = (msg) => {
@@ -82,9 +85,17 @@ function AnalyzerPage() {
     goToStep(5)
     setIsLoading(true)
     setResults(null)
-    await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 500))
-    setResults(mockData[language].results)
-    setIsLoading(false)
+    setError(null)
+    try {
+      const currentModeName = analysisModes.find((m) => m.id === selectedMode)?.name || selectedMode
+      const apiResponse = await analyzeCode({ language, mode: currentModeName, code, instruction: customInstruction })
+      setResults(transformResponse(apiResponse))
+    } catch {
+      setError('AI Analysis Failed. Please try again.')
+      setResults(null)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleDownloadReport = () => {
@@ -258,9 +269,10 @@ function AnalyzerPage() {
                 </div>
                 <motion.button
                   onClick={handleAnalyze}
+                  disabled={isLoading}
                   whileTap={{ scale: 0.97 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg shadow-blue-500/20 transition-all"
+                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                  className={`w-full py-3.5 rounded-xl font-semibold text-white transition-all ${isLoading ? 'bg-gray-700 cursor-not-allowed opacity-60' : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg shadow-blue-500/20'}`}
                 >
                   🔍 Analyze Now
                 </motion.button>
@@ -276,6 +288,15 @@ function AnalyzerPage() {
                   </div>
                 ) : (
                   <>
+                    {!isLoading && error && (
+                      <div className="glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-red-400 text-lg font-semibold mb-2">⚠️ {error}</div>
+                        </div>
+                      </div>
+                    )}
+                    {!isLoading && !error && (
+                    <>
                     {/* Action buttons */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       <motion.button
@@ -325,6 +346,8 @@ function AnalyzerPage() {
                     <div className="glass rounded-2xl p-5 min-h-[500px] flex flex-col">
                       <ResultsPanel results={results} language={language} />
                     </div>
+                    </>
+                    )}
                   </>
                 )}
               </div>
@@ -361,9 +384,10 @@ function AnalyzerPage() {
             {step === 4 && (
               <motion.button
                 onClick={handleAnalyze}
-                whileHover={{ scale: 1.02 }}
+                disabled={isLoading}
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all"
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all ${isLoading ? 'bg-gray-700 cursor-not-allowed opacity-60 text-white' : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'}`}
               >
                 Analyze 🔍
               </motion.button>
