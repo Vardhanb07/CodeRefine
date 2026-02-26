@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes.analyze import router as analyze_router
-from backend.config.settings import ALLOWED_ORIGINS
+from routes.analyze import router as analyze_router
+from config.settings import ALLOWED_ORIGINS
 
 app = FastAPI(title="CodeRefine Backend")
 

@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from backend.models.analysis_request import AnalysisRequest
-from backend.services.static_analyzer import run_static_analysis
-from backend.services.groq_service import analyze_with_groq
-from backend.services.aggregation_engine import aggregate_issues
-from backend.services.confidence_engine import compute_confidence
+from models.analysis_request import AnalysisRequest
+from services.static_analyzer import run_static_analysis
+from services.groq_service import analyze_with_groq
+from services.aggregation_engine import aggregate_issues
+from services.confidence_engine import compute_confidence
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 import json
 from groq import Groq
-from backend.config.settings import GROQ_API_KEY
+from config.settings import GROQ_API_KEY
 
 _client = None
 
