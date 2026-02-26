@@ -1,6 +1,9 @@
 import json
+import logging
 from groq import Groq
 from config.settings import GROQ_API_KEY
+
+logger = logging.getLogger(__name__)
 
 _client = None
 
@@ -8,6 +11,9 @@ _client = None
 def _get_client() -> Groq:
     global _client
     if _client is None:
+        if GROQ_API_KEY is None:
+            logger.warning("GROQ_API_KEY is None! Check your .env file.")
+            print("[WARNING] GROQ_API_KEY is None!")
         _client = Groq(api_key=GROQ_API_KEY)
     return _client
 
@@ -53,12 +59,16 @@ Instructions:
 
     try:
         client = _get_client()
+        logger.info("Calling Groq API with model llama3-70b-8192...")
+        print("[DEBUG] Calling Groq API...")
         response = client.chat.completions.create(
             model="llama3-70b-8192",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
             max_tokens=4096,
         )
+        logger.info("Groq API response received successfully.")
+        print("[DEBUG] Groq API response received.")
         content = response.choices[0].message.content.strip()
         # Strip markdown fences if present
         if content.startswith("```"):
