@@ -5,12 +5,15 @@ import CodeEditor from '../components/CodeEditor'
 import ResultsPanel from '../components/ResultsPanel'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { mockData, languageLabels } from '../data/mockData'
+import { analyzeCode } from '../services/api'
+import { transformResponse } from '../utils/transformResponse'
 
 function ToolPage() {
   const [language, setLanguage] = useState('python')
   const [code, setCode] = useState(mockData.python.sampleCode)
   const [results, setResults] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang)
@@ -21,10 +24,16 @@ function ToolPage() {
   const handleAnalyze = async () => {
     setIsLoading(true)
     setResults(null)
-    // Simulate 1.5-2 second delay
-    await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 500))
-    setResults(mockData[language].results)
-    setIsLoading(false)
+    setError(null)
+    try {
+      const apiResponse = await analyzeCode({ language, mode: "Bug Detection", code, instruction: "" })
+      setResults(transformResponse(apiResponse))
+    } catch {
+      setError('AI Analysis Failed. Please try again.')
+      setResults(null)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -89,6 +98,12 @@ function ToolPage() {
             <div className="glass rounded-2xl p-5 min-h-[600px] flex flex-col">
               {isLoading ? (
                 <LoadingSpinner />
+              ) : error ? (
+                <div className="flex items-center justify-center h-64">
+                  <div className="text-center">
+                    <div className="text-red-400 text-lg font-semibold mb-2">⚠️ {error}</div>
+                  </div>
+                </div>
               ) : (
                 <ResultsPanel results={results} language={language} />
               )}

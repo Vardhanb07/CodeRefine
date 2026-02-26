@@ -14,7 +14,7 @@ function LoadingSpinner() {
         transition={{ duration: 1.5, repeat: Infinity }}
         className="text-gray-400 text-sm"
       >
-        Analyzing code with AI...
+        Analyzing with AI...
       </motion.div>
     </div>
   )
