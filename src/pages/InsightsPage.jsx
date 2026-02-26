@@ -77,6 +77,31 @@ function InsightsPage() {
             </ResponsiveContainer>
           </ChartWidget>
         </div>
+
+        {/* AI Summary Panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="glass rounded-2xl p-6 mt-6"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-600/30 flex items-center justify-center text-lg">
+              🤖
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-white">AI Insights Summary</h2>
+              <p className="text-xs text-gray-500">Generated from your analysis trends</p>
+            </div>
+            <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">Mock AI</span>
+          </div>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Your <span className="text-blue-300 font-medium">confidence scores have improved by 20%</span> over the last 6 months, rising from 72% in September to 87% in February — a strong indicator of improving code quality practices.
+            {' '}<span className="text-purple-300 font-medium">Python continues to be your most analyzed language</span> (45% of all analyses), followed by Java (30%) and C++ (25%).
+            {' '}<span className="text-red-300 font-medium">Bug detection remains the most common issue type</span> (89 issues), closely followed by Style issues (103) and Performance (67) — suggesting a focus on automated testing and linting would be highly beneficial.
+            Performance gains have also steadily increased from <span className="text-yellow-300 font-medium">18% to 34%</span>, showing effective optimization work. Consider investing more in security scanning as it accounts for only 42 of the total 356 flagged issues, while security risks often have the highest impact.
+          </p>
+        </motion.div>
       </motion.div>
     </AppLayout>
   )

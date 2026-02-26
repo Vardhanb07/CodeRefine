@@ -490,3 +490,103 @@ export const userProfile = {
   preferredLanguage: 'Python',
   role: 'Senior Developer',
 }
+
+export const analysisModes = [
+  { id: 'bug', name: 'Bug Detection', icon: '🐛', description: 'Find bugs and logical errors in your code', color: 'from-red-500 to-orange-500' },
+  { id: 'security', name: 'Security Scan', icon: '🔒', description: 'Detect security vulnerabilities and risks', color: 'from-yellow-500 to-red-500' },
+  { id: 'performance', name: 'Performance', icon: '⚡', description: 'Identify performance bottlenecks and optimizations', color: 'from-yellow-400 to-orange-500' },
+  { id: 'cleanup', name: 'Code Cleanup', icon: '✨', description: 'Clean up code style and remove dead code', color: 'from-blue-400 to-cyan-500' },
+  { id: 'refactor', name: 'Refactor Mode', icon: '🔄', description: 'Suggest refactoring patterns and improvements', color: 'from-purple-500 to-pink-500' },
+  { id: 'complexity', name: 'Complexity Analysis', icon: '📊', description: 'Analyze cyclomatic and cognitive complexity', color: 'from-green-500 to-emerald-500' },
+]
+
+export const projectDetailData = {
+  1: {
+    analyses: [
+      { id: 1, title: 'auth_service.py', mode: 'Security Scan', date: '2026-02-25', confidence: 91, issues: 4 },
+      { id: 2, title: 'payment_handler.py', mode: 'Bug Detection', date: '2026-02-23', confidence: 88, issues: 2 },
+      { id: 3, title: 'user_model.py', mode: 'Code Cleanup', date: '2026-02-21', confidence: 94, issues: 1 },
+      { id: 4, title: 'api_routes.py', mode: 'Performance', date: '2026-02-18', confidence: 82, issues: 3 },
+    ],
+    files: [
+      { name: 'auth_service.py', language: 'Python', lastAnalyzed: '2026-02-25', issues: 4 },
+      { name: 'payment_handler.py', language: 'Python', lastAnalyzed: '2026-02-23', issues: 2 },
+      { name: 'user_model.py', language: 'Python', lastAnalyzed: '2026-02-21', issues: 1 },
+      { name: 'api_routes.py', language: 'Python', lastAnalyzed: '2026-02-18', issues: 3 },
+      { name: 'database.sql', language: 'SQL', lastAnalyzed: '2026-02-15', issues: 0 },
+    ],
+  },
+  2: {
+    analyses: [
+      { id: 1, title: 'JwtService.java', mode: 'Security Scan', date: '2026-02-22', confidence: 89, issues: 3 },
+      { id: 2, title: 'AuthController.java', mode: 'Bug Detection', date: '2026-02-20', confidence: 85, issues: 2 },
+      { id: 3, title: 'RedisConfig.java', mode: 'Performance', date: '2026-02-18', confidence: 91, issues: 1 },
+    ],
+    files: [
+      { name: 'JwtService.java', language: 'Java', lastAnalyzed: '2026-02-22', issues: 3 },
+      { name: 'AuthController.java', language: 'Java', lastAnalyzed: '2026-02-20', issues: 2 },
+      { name: 'RedisConfig.java', language: 'Java', lastAnalyzed: '2026-02-18', issues: 1 },
+      { name: 'Dockerfile', language: 'Docker', lastAnalyzed: '2026-02-15', issues: 0 },
+    ],
+  },
+  3: {
+    analyses: [
+      { id: 1, title: 'renderer.cpp', mode: 'Performance', date: '2026-02-18', confidence: 78, issues: 5 },
+      { id: 2, title: 'websocket_server.cpp', mode: 'Bug Detection', date: '2026-02-16', confidence: 82, issues: 3 },
+      { id: 3, title: 'data_stream.cpp', mode: 'Complexity Analysis', date: '2026-02-14', confidence: 76, issues: 4 },
+    ],
+    files: [
+      { name: 'renderer.cpp', language: 'C++', lastAnalyzed: '2026-02-18', issues: 5 },
+      { name: 'websocket_server.cpp', language: 'C++', lastAnalyzed: '2026-02-16', issues: 3 },
+      { name: 'data_stream.cpp', language: 'C++', lastAnalyzed: '2026-02-14', issues: 4 },
+      { name: 'chart_engine.cpp', language: 'C++', lastAnalyzed: '2026-02-12', issues: 2 },
+    ],
+  },
+  4: {
+    analyses: [
+      { id: 1, title: 'ingestion.py', mode: 'Performance', date: '2026-02-15', confidence: 88, issues: 2 },
+      { id: 2, title: 'preprocessor.py', mode: 'Bug Detection', date: '2026-02-13', confidence: 91, issues: 1 },
+      { id: 3, title: 'feature_eng.py', mode: 'Complexity Analysis', date: '2026-02-11', confidence: 84, issues: 3 },
+    ],
+    files: [
+      { name: 'ingestion.py', language: 'Python', lastAnalyzed: '2026-02-15', issues: 2 },
+      { name: 'preprocessor.py', language: 'Python', lastAnalyzed: '2026-02-13', issues: 1 },
+      { name: 'feature_eng.py', language: 'Python', lastAnalyzed: '2026-02-11', issues: 3 },
+    ],
+  },
+  5: {
+    analyses: [
+      { id: 1, title: 'gateway_config.java', mode: 'Security Scan', date: '2026-02-10', confidence: 87, issues: 2 },
+      { id: 2, title: 'rate_limiter.java', mode: 'Performance', date: '2026-02-08', confidence: 90, issues: 1 },
+    ],
+    files: [
+      { name: 'gateway_config.java', language: 'Java', lastAnalyzed: '2026-02-10', issues: 2 },
+      { name: 'rate_limiter.java', language: 'Java', lastAnalyzed: '2026-02-08', issues: 1 },
+      { name: 'kong.yaml', language: 'YAML', lastAnalyzed: '2026-02-06', issues: 0 },
+    ],
+  },
+  6: {
+    analyses: [
+      { id: 1, title: 'entity_system.cpp', mode: 'Complexity Analysis', date: '2026-02-08', confidence: 75, issues: 6 },
+      { id: 2, title: 'physics_engine.cpp', mode: 'Performance', date: '2026-02-06', confidence: 80, issues: 4 },
+      { id: 3, title: 'renderer_core.cpp', mode: 'Bug Detection', date: '2026-02-04', confidence: 77, issues: 3 },
+      { id: 4, title: 'input_handler.cpp', mode: 'Code Cleanup', date: '2026-02-02', confidence: 88, issues: 1 },
+    ],
+    files: [
+      { name: 'entity_system.cpp', language: 'C++', lastAnalyzed: '2026-02-08', issues: 6 },
+      { name: 'physics_engine.cpp', language: 'C++', lastAnalyzed: '2026-02-06', issues: 4 },
+      { name: 'renderer_core.cpp', language: 'C++', lastAnalyzed: '2026-02-04', issues: 3 },
+      { name: 'input_handler.cpp', language: 'C++', lastAnalyzed: '2026-02-02', issues: 1 },
+      { name: 'audio_system.cpp', language: 'C++', lastAnalyzed: '2026-01-30', issues: 2 },
+    ],
+  },
+}
+
+export const searchResults = [
+  { id: 1, title: 'user_auth.py', type: 'Analysis', description: 'Bug Detection — Python', date: '2026-02-25' },
+  { id: 2, title: 'E-Commerce Backend', type: 'Project', description: 'FastAPI backend — 24 files', date: '2026-02-25' },
+  { id: 3, title: 'UserService.java', type: 'Analysis', description: 'Security Scan — Java', date: '2026-02-24' },
+  { id: 4, title: 'ML Pipeline', type: 'Project', description: 'Data pipeline — 18 files', date: '2026-02-15' },
+  { id: 5, title: 'main.cpp', type: 'Analysis', description: 'Performance Optimization — C++', date: '2026-02-23' },
+  { id: 6, title: 'Microservices Auth', type: 'Project', description: 'JWT auth — 12 files', date: '2026-02-22' },
+]
