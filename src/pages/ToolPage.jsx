@@ -4,20 +4,19 @@ import Navbar from '../components/Navbar'
 import CodeEditor from '../components/CodeEditor'
 import ResultsPanel from '../components/ResultsPanel'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { mockData, languageLabels } from '../data/mockData'
+import { languageLabels } from '../data/mockData'
 import { analyzeCode } from '../services/api'
 import { transformResponse } from '../utils/transformResponse'
 
 function ToolPage() {
   const [language, setLanguage] = useState('python')
-  const [code, setCode] = useState(mockData.python.sampleCode)
+  const [code, setCode] = useState('')
   const [results, setResults] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang)
-    setCode(mockData[newLang].sampleCode)
     setResults(null)
   }
 

@@ -6,7 +6,7 @@ import AppLayout from '../layouts/AppLayout'
 import CodeEditor from '../components/CodeEditor'
 import ResultsPanel from '../components/ResultsPanel'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { mockData, languageLabels, analysisModes } from '../data/mockData'
+import { languageLabels, analysisModes } from '../data/mockData'
 import { analyzeCode } from '../services/api'
 import { transformResponse } from '../utils/transformResponse'
 
@@ -59,7 +59,7 @@ function AnalyzerPage() {
       : 'bug'
   )
   const [language, setLanguage] = useState('python')
-  const [code, setCode] = useState(mockData.python.sampleCode)
+  const [code, setCode] = useState('')
   const [customInstruction, setCustomInstruction] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [results, setResults] = useState(null)
@@ -78,7 +78,7 @@ function AnalyzerPage() {
 
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang)
-    setCode(mockData[newLang].sampleCode)
+    // Don't load mock sample code on language change
   }
 
   const handleAnalyze = async () => {
