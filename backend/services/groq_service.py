@@ -6,6 +6,8 @@ from config.settings import GROQ_API_KEY
 
 logger = logging.getLogger(__name__)
 
+MODEL = "llama-3.3-70b-versatile"
+
 _client = None
 
 
@@ -28,22 +30,34 @@ def _safe_parse_json(raw_content: str) -> dict:
         except json.JSONDecodeError as e:
             logger.error(f"JSON decode failed (fenced block): {e}")
 
-    # Strategy 2: find the first { ... } span via brace matching
+    # Strategy 2: find the first { ... } span via brace matching (string-aware)
     start = raw_content.find('{')
     if start != -1:
         depth = 0
+        in_string = False
+        escaped = False
         for i, ch in enumerate(raw_content[start:], start):
-            if ch == '{':
-                depth += 1
-            elif ch == '}':
-                depth -= 1
-                if depth == 0:
-                    candidate = raw_content[start:i + 1]
-                    try:
-                        return json.loads(candidate)
-                    except json.JSONDecodeError as e:
-                        logger.error(f"JSON decode failed (brace-matched): {e}")
-                    break
+            if escaped:
+                escaped = False
+                continue
+            if ch == '\\' and in_string:
+                escaped = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                continue
+            if not in_string:
+                if ch == '{':
+                    depth += 1
+                elif ch == '}':
+                    depth -= 1
+                    if depth == 0:
+                        candidate = raw_content[start:i + 1]
+                        try:
+                            return json.loads(candidate)
+                        except json.JSONDecodeError as e:
+                            logger.error(f"JSON decode failed (brace-matched): {e}")
+                        break
 
     # Strategy 3: outermost { to last }
     last = raw_content.rfind('}')
@@ -99,16 +113,15 @@ Instructions:
     content = ""
     try:
         client = _get_client()
-        logger.info("Calling Groq API with model llama3-70b-8192...")
-        print("[DEBUG] Calling Groq API...")
+        logger.info(f"Calling Groq API with model {MODEL}...")
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model=MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
-            max_tokens=4096,
+            max_tokens=8192,
+            response_format={"type": "json_object"},
         )
         logger.info("Groq API response received successfully.")
-        print("[DEBUG] Groq API response received.")
         content = response.choices[0].message.content.strip()
         data = _safe_parse_json(content)
         return {
