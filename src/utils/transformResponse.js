@@ -1,5 +1,5 @@
 export function transformResponse(apiResponse) {
-  const { static_issues = [], ai_suggestions = [], optimized_code = "", confidence_score = 0 } = apiResponse;
+  const { static_issues = [], ai_suggestions = [], optimized_code = "", confidence_score = 0, explanation = "" } = apiResponse;
 
   const allIssues = [...static_issues, ...ai_suggestions];
 
@@ -35,5 +35,6 @@ export function transformResponse(apiResponse) {
     bestPractices,
     optimizedCode: optimized_code,
     confidence: confidence_score,
+    explanation,
   };
 }

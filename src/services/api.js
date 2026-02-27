@@ -8,7 +8,14 @@ export async function analyzeCode({ code, language, mode = "full", instruction =
   });
 
   if (!response.ok) {
-    throw new Error("Analysis failed");
+    let errorMessage = "Analysis failed";
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.explanation || errorData.detail || errorMessage;
+    } catch {
+      // response body wasn't JSON
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();
