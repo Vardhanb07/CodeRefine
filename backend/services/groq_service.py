@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from groq import Groq
 from config.settings import GROQ_API_KEY
 
@@ -12,10 +13,48 @@ def _get_client() -> Groq:
     global _client
     if _client is None:
         if GROQ_API_KEY is None:
-            logger.warning("GROQ_API_KEY is None! Check your .env file.")
-            print("[WARNING] GROQ_API_KEY is None!")
+            raise ValueError("GROQ_API_KEY is not set. Check your .env file.")
         _client = Groq(api_key=GROQ_API_KEY)
     return _client
+
+
+def _safe_parse_json(raw_content: str) -> dict:
+    """Try multiple strategies to extract and parse JSON from LLM output."""
+    # Strategy 1: extract JSON from markdown fences
+    fenced = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', raw_content, re.DOTALL)
+    if fenced:
+        try:
+            return json.loads(fenced.group(1).strip())
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON decode failed (fenced block): {e}")
+
+    # Strategy 2: find the first { ... } span via brace matching
+    start = raw_content.find('{')
+    if start != -1:
+        depth = 0
+        for i, ch in enumerate(raw_content[start:], start):
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    candidate = raw_content[start:i + 1]
+                    try:
+                        return json.loads(candidate)
+                    except json.JSONDecodeError as e:
+                        logger.error(f"JSON decode failed (brace-matched): {e}")
+                    break
+
+    # Strategy 3: outermost { to last }
+    last = raw_content.rfind('}')
+    if start != -1 and last != -1 and last > start:
+        candidate = raw_content[start:last + 1]
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON decode failed (outermost braces): {e}")
+
+    raise json.JSONDecodeError("No valid JSON object found in LLM output", raw_content, 0)
 
 
 def analyze_with_groq(language: str, mode: str, instruction: str, code: str, static_issues: list) -> dict:
@@ -57,6 +96,7 @@ Instructions:
 4. Provide the optimized code in the optimized_code field.
 5. Return ONLY valid JSON, no markdown fences, no extra text."""
 
+    content = ""
     try:
         client = _get_client()
         logger.info("Calling Groq API with model llama3-70b-8192...")
@@ -70,20 +110,16 @@ Instructions:
         logger.info("Groq API response received successfully.")
         print("[DEBUG] Groq API response received.")
         content = response.choices[0].message.content.strip()
-        # Strip markdown fences if present
-        if content.startswith("```"):
-            content = content.split("```", 2)[1]
-            if content.startswith("json"):
-                content = content[4:]
-            content = content.rsplit("```", 1)[0].strip()
-
-        data = json.loads(content)
+        data = _safe_parse_json(content)
         return {
             "ai_issues": data.get("ai_issues", []),
             "optimized_code": data.get("optimized_code", code),
             "explanation": data.get("explanation", ""),
         }
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON decode failed: {e}")
+        logger.error(f"Raw Groq response: {content}")
         return {"ai_issues": [], "optimized_code": code, "explanation": "Analysis could not be completed. Please try again."}
-    except Exception:
+    except Exception as e:
+        logger.error(f"Groq API error: {e}", exc_info=True)
         return {"ai_issues": [], "optimized_code": code, "explanation": "An error occurred while contacting the AI service."}
