@@ -1,5 +1,4 @@
-fastapi
-uvicorn
+fastapi[standard]
 groq
 python-dotenv
 bandit
